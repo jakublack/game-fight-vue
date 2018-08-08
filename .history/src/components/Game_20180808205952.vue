@@ -11,18 +11,19 @@
       </div>
     </div>
     <div class="wrapper-action">
-
-      <button v-if="!startGame" class="btn btn-new-game" v-on:click="startNewGame">Start New Game</button>
-
-      <template v-else>
-        <button class="btn btn-atack">Attack</button>
-        <button class="btn btn-extra-atack">Extra Attack</button>
+      <button class="btn btn-new-game">Start New Game</button>
+      <template>
+        <button class="btn btn-atack">Atack</button>
+        <button class="btn btn-extra-atack">Extra Atack</button>
         <button class="btn btn-health">Health</button>
         <button class="btn btn-give-up">Give Up</button>
-      </template>
 
+      </template>
     </div>
+
+
   </div>
+
 </template>
 
 <script>
@@ -34,17 +35,13 @@ export default {
       healthMonster : 100,
       startGame : false,
     }
-  },
-  methods: {
-    startNewGame: function() {
-      this.startGame = !this.startGame;
-    }
   }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scss scoped>
 
 .wrapper--person {
   text-align: center;
@@ -91,7 +88,6 @@ export default {
   outline: none;
   color: #fff;
   border-radius: 10px;
-  margin: 5px;
 }
 .btn-new-game {
   background-color: #2A983D;
@@ -104,9 +100,6 @@ export default {
 }
 .btn-health {
   background-color: #00C3FF;
-}
-.btn-give-up {
-  background-color: #F4EEE8;
 }
 
 

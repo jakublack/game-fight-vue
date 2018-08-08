@@ -11,18 +11,19 @@
       </div>
     </div>
     <div class="wrapper-action">
-
-      <button v-if="!startGame" class="btn btn-new-game" v-on:click="startNewGame">Start New Game</button>
-
-      <template v-else>
-        <button class="btn btn-atack">Attack</button>
-        <button class="btn btn-extra-atack">Extra Attack</button>
+      <button class="btn btn-new-game">Start New Game</button>
+      <template v-show="startGame">
+        <button class="btn btn-atack">Atack</button>
+        <button class="btn btn-extra-atack">Extra Atack</button>
         <button class="btn btn-health">Health</button>
         <button class="btn btn-give-up">Give Up</button>
-      </template>
 
+      </template>
     </div>
+
+
   </div>
+
 </template>
 
 <script>
@@ -32,19 +33,14 @@ export default {
     return {
       healthYou : 100,
       healthMonster : 100,
-      startGame : false,
-    }
-  },
-  methods: {
-    startNewGame: function() {
-      this.startGame = !this.startGame;
     }
   }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scss scoped>
 
 .wrapper--person {
   text-align: center;

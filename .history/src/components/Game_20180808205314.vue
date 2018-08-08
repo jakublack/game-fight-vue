@@ -3,48 +3,31 @@
     <div class="wrapper--person">
       <div class="person--player">
         <p>You</p>
-        <div class="person--health player--health">{{healthYou}}</div>
+        <div class="person--health player--health"></div>
       </div>
       <div class="person--player">
         <p>Monster</p>
-        <div class="person--health monster--health">{{healthMonster}}</div>
+        <div class="person--health monster--health"></div>
       </div>
     </div>
     <div class="wrapper-action">
-
-      <button v-if="!startGame" class="btn btn-new-game" v-on:click="startNewGame">Start New Game</button>
-
-      <template v-else>
-        <button class="btn btn-atack">Attack</button>
-        <button class="btn btn-extra-atack">Extra Attack</button>
-        <button class="btn btn-health">Health</button>
-        <button class="btn btn-give-up">Give Up</button>
-      </template>
-
+      <button class="btn btn-new-game">Start New Game</button>
     </div>
+
+
   </div>
+
 </template>
 
 <script>
 export default {
   name: 'Game',
-  data:  function() {
-    return {
-      healthYou : 100,
-      healthMonster : 100,
-      startGame : false,
-    }
-  },
-  methods: {
-    startNewGame: function() {
-      this.startGame = !this.startGame;
-    }
-  }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scss scoped>
 
 .wrapper--person {
   text-align: center;
@@ -69,7 +52,6 @@ export default {
   margin: 10px auto;
   background-color: #35BF4D;
   border: 1px solid #000;
-  color: #fff;
 }
 .wrapper-action {
   width: calc(80% + 20px);
@@ -83,32 +65,17 @@ export default {
   align-items: center;
 }
 .btn {
-  width: 150px;
-  height: 40px;
+  width: 130px;
+  height: 30px;
   border: none;
   cursor: pointer;
   font-size: 14px;
   outline: none;
   color: #fff;
-  border-radius: 10px;
-  margin: 5px;
 }
 .btn-new-game {
   background-color: #2A983D;
 }
-.btn-atack {
-  background-color:#FF1919;
-}
-.btn-extra-atack {
-  background-color: #7f0c0c;
-}
-.btn-health {
-  background-color: #00C3FF;
-}
-.btn-give-up {
-  background-color: #F4EEE8;
-}
-
 
 
 

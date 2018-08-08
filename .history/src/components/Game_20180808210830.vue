@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     startNewGame: function() {
-      this.startGame = !this.startGame;
+      this.startGame = !startGame;
     }
   }
 }
