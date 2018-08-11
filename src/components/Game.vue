@@ -59,7 +59,7 @@ export default {
       healthMonster : 100,
       startGame : false,
       gameEnd: false,
-      msg: 'Ohhh... no you Give Up... why?',
+      msg: 'Ohhh... No, You Give Up... Why?',
       actionList: [],
       youColor: '#35BF4D',
       monsterColor: '#35BF4D',
@@ -131,7 +131,7 @@ export default {
 
 
 
-      this.addActionToList('health', healthActionYou, healthActionMonster)
+      this.addActionToList('health',healthActionMonster, healthActionYou)
     },
 
     getRandomNumner: function(min, max) {
@@ -163,13 +163,13 @@ export default {
       if(this.healthYou <= 0) {
         this.healthYou = 0;
         this.gameEnd = !this.gameEnd;
-        this.msg = 'Ohhh no.... Monster killed You.... Try again'
+        this.msg = 'Ohhh no... Monster killed You... Try again.'
       }
 
       if(this.healthMonster <= 0) {
         this.healthMonster = 0;
         this.gameEnd = !this.gameEnd;
-        this.msg = 'yeeeee You kill the Monster!!'
+        this.msg = 'Yeeeee... You kill the Monster!!'
       }
     }
 
@@ -186,6 +186,7 @@ export default {
 
 .wrapper--app {
   position: relative;
+  font-family: 'Courier New', Courier, monospace
 }
 
 .person--player {
