@@ -4,13 +4,15 @@
       <div class="person--player">
         <p>You</p>
         <div class="person--health">
-          <span v-bind:style="{width:healthYou+'%'}">{{healthYou}}</span>
+          <span v-bind:style="{width:healthYou+'%', backgroundColor: youColor}"></span>
+          <p class="health--info">{{healthYou}}</p>
         </div>
       </div>
       <div class="person--player">
         <p>Monster</p>
         <div class="person--health">
-          <span v-bind:style="{width:healthMonster+'%'}">{{healthMonster}}</span>
+          <span v-bind:style="{width:healthMonster+'%', backgroundColor: monsterColor}"></span>
+          <p class="health--info">{{healthMonster}}</p>
         </div>
       </div>
     </div>
@@ -27,11 +29,11 @@
 
     </div>
 
-    <div class="wrapper--list--action">
+    <div v-show="actionList.length" class="wrapper--list--action">
       <ul class="action--list">
         <li class="action--item" v-for="action in actionList" v-bind:key="action.id">
-          <p>{{action.youAction}}</p>
-          <p>{{action.monsterAction}}</p>
+          <p>You {{action.youAction}} by {{action.monsterHealthPoints}}</p>
+          <p>Monster {{action.monsterAction}} by {{action.youHealthPoints}}</p>
         </li>
       </ul>
     </div>
@@ -52,23 +54,17 @@ export default {
   name: 'Game',
   data:  function() {
     return {
+      counterId: 0,
       healthYou : 100,
       healthMonster : 100,
       startGame : false,
-      msg: 'Ohhh... no you Give Up... why?',
       gameEnd: false,
-      actionList: [
-        {
-          id: 0,
-          youAction: 0,
-          monsterAction: 0
-        },
-        {
-          id: 1,
-          youAction: 0,
-          monsterAction: 0
-        }
-      ]
+      msg: 'Ohhh... no you Give Up... why?',
+      actionList: [],
+      youColor: '#35BF4D',
+      monsterColor: '#35BF4D',
+
+
     }
   },
   methods: {
@@ -78,44 +74,96 @@ export default {
     resetGame: function() {
       this.startGame = !this.startGame;
       this.gameEnd = !this.gameEnd;
-
     },
+
     closeModal : function() {
       this.gameEnd = !this.gameEnd;
       this.startGame = !this.startGame;
       this.healthYou =100;
       this.healthMonster = 100;
+      this.actionList = [];
     },
+
     attackAction: function() {
-      this.healthYou -= this.getRandomNumner(0,10);
-      this.healthMonster -= this.getRandomNumner(0,10);
+
+      let healthActionYou = this.getRandomNumner(0,10),
+          healthActionMonster = this.getRandomNumner(0,10);
+
+      this.healthYou -= healthActionYou;
+      this.healthMonster -= healthActionMonster;
+
+      this.addActionToList('attack', healthActionYou, healthActionMonster);
+
+      this.checkProgressColor()
 
       this.checkResults()
 
     },
+
     attackExtraAction: function() {
-      this.healthYou -= this.getRandomNumner(0,20);
-      this.healthMonster -= this.getRandomNumner(0,20);
+
+      let healthActionYou = this.getRandomNumner(0,20),
+          healthActionMonster = this.getRandomNumner(0,20);
+
+      this.healthYou -= healthActionYou;
+      this.healthMonster -= healthActionMonster;
+
+      this.addActionToList('extra attack', healthActionYou, healthActionMonster)
+
+      this.checkProgressColor()
 
       this.checkResults()
     },
+
     healthAction: function() {
 
-      this.healthYou += this.getRandomNumner(0,10);
-      this.healthMonster += this.getRandomNumner(0,10);
+      let healthActionYou = this.getRandomNumner(0,10),
+          healthActionMonster = this.getRandomNumner(0,10);
+
+
+      this.healthYou += healthActionYou;
+      this.healthMonster += healthActionMonster;
 
       if(this.healthYou >= 100) this.healthYou = 100;
       if(this.healthMonster >= 100) this.healthMonster = 100;
+
+      this.checkProgressColor()
+
+
+
+      this.addActionToList('health', healthActionYou, healthActionMonster)
     },
+
     getRandomNumner: function(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
+
+    checkProgressColor : function() {
+      this.youColor = this.healthYou < 50 ? '#DC143C' : '#35BF4D';
+      this.monsterColor = this.healthMonster < 50 ? '#DC143C' : '#35BF4D';
+
+    },
+
+    addActionToList: function(action, youPoints, monsterPoints) {
+      let actionItem = {
+          id: this.counterId,
+          youHealthPoints: youPoints,
+          youAction: action,
+          monsterHealthPoints: monsterPoints,
+          monsterAction : action,
+      }
+
+      this.actionList.push(actionItem)
+
+      this.counterId +=1;
+    },
+
     checkResults: function() {
 
       if(this.healthYou <= 0) {
         this.healthYou = 0;
         this.gameEnd = !this.gameEnd;
-        this.msg = 'Ohhh no.... Monster kill You.... Try again'
+        this.msg = 'Ohhh no.... Monster killed You.... Try again'
       }
 
       if(this.healthMonster <= 0) {
@@ -158,13 +206,23 @@ export default {
   height: 30px;
   margin: 10px auto;
   border: 1px solid #000;
-  color: #fff;
+  position: relative;
+}
+
+.health--info {
+  position: absolute;
+  font-size: 12px;
+  top: 0;
+  margin: 0;
+  left: 50%;
+  transform: translate(-50%,0);
+  color: #000;
 }
 
 .person--health span {
-  background-color: #35BF4D;
   display: block;
   height: 100%;
+  transition: width .5s;
 }
 
 .wrapper--action {
@@ -208,13 +266,14 @@ export default {
 }
 
 .wrapper--info {
-  position: absolute;
+  position: fixed;
+  top: 150px;
   height: 200px;
   width: 300px;
   background-color: #fff;
   box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translateX(-50%);
 }
 .wrapper--info--text {
   text-align: center;
