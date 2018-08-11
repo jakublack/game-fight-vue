@@ -1,4 +1,4 @@
-# Simple game fight with Monster
+# Simple fight game with monster
 
 ## Use
 
