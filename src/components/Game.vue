@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper--app">
     <div class="wrapper--person">
+      <p class="text--ruls">It is one rule, monster do this same action that You - the only different is in the amount of health points. </p>
+
       <div class="person--player">
         <p>You</p>
         <div class="person--health">
@@ -74,11 +76,13 @@ export default {
     resetGame: function() {
       this.startGame = !this.startGame;
       this.gameEnd = !this.gameEnd;
+      this.youColor = '#35BF4D';
+      this.monsterColor = '#35BF4D';
+      this.counterId = 0;
     },
 
     closeModal : function() {
-      this.gameEnd = !this.gameEnd;
-      this.startGame = !this.startGame;
+      this.resetGame();
       this.healthYou =100;
       this.healthMonster = 100;
       this.actionList = [];
@@ -86,33 +90,39 @@ export default {
 
     attackAction: function() {
 
-      let healthActionYou = this.getRandomNumner(0,10),
-          healthActionMonster = this.getRandomNumner(0,10);
+      let healthActionYou = this.getRandomNumner(1,10),
+          healthActionMonster = this.getRandomNumner(1,10);
+
+      this.healthMonster -= healthActionMonster;
+
+      if(this.checkResults()) return;
 
       this.healthYou -= healthActionYou;
-      this.healthMonster -= healthActionMonster;
+
+      this.checkResults()
 
       this.addActionToList('attack', healthActionYou, healthActionMonster);
 
       this.checkProgressColor()
 
-      this.checkResults()
-
     },
 
     attackExtraAction: function() {
 
-      let healthActionYou = this.getRandomNumner(0,20),
-          healthActionMonster = this.getRandomNumner(0,20);
+      let healthActionYou = this.getRandomNumner(9,20),
+          healthActionMonster = this.getRandomNumner(9,20);
+
+      this.healthMonster -= healthActionMonster;
+
+      if(this.checkResults()) return;
 
       this.healthYou -= healthActionYou;
-      this.healthMonster -= healthActionMonster;
+
+      this.checkResults()
 
       this.addActionToList('extra attack', healthActionYou, healthActionMonster)
 
       this.checkProgressColor()
-
-      this.checkResults()
     },
 
     healthAction: function() {
@@ -129,8 +139,6 @@ export default {
 
       this.checkProgressColor()
 
-
-
       this.addActionToList('health',healthActionMonster, healthActionYou)
     },
 
@@ -141,7 +149,6 @@ export default {
     checkProgressColor : function() {
       this.youColor = this.healthYou < 50 ? '#DC143C' : '#35BF4D';
       this.monsterColor = this.healthMonster < 50 ? '#DC143C' : '#35BF4D';
-
     },
 
     addActionToList: function(action, youPoints, monsterPoints) {
@@ -153,24 +160,26 @@ export default {
           monsterAction : action,
       }
 
-      this.actionList.push(actionItem)
+      this.actionList.unshift(actionItem)
 
       this.counterId +=1;
     },
 
     checkResults: function() {
 
-      if(this.healthYou <= 0) {
-        this.healthYou = 0;
-        this.gameEnd = !this.gameEnd;
-        this.msg = 'Ohhh no... Monster killed You... Try again.'
-      }
-
       if(this.healthMonster <= 0) {
         this.healthMonster = 0;
         this.gameEnd = !this.gameEnd;
         this.msg = 'Yeeeee... You kill the Monster!!'
+        return true;
+      } else if(this.healthYou <= 0) {
+        this.healthYou = 0;
+        this.gameEnd = !this.gameEnd;
+        this.msg = 'Ohhh no... Monster killed You... Try again.'
+        return true;
       }
+      return false;
+
     }
 
   }
@@ -182,6 +191,11 @@ export default {
 
 .wrapper--person {
   text-align: center;
+}
+.text--ruls {
+  width: 80%;
+  display: block;
+  margin: 20px auto 10px;
 }
 
 .wrapper--app {
