@@ -7,10 +7,6 @@
 * VUE
 * WebPack
 
-Run on Netlify:
-
-https://upbeat-wright-69d548.netlify.com
-
 
 ### Installing
 
